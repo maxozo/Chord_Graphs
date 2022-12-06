@@ -1,52 +1,78 @@
 #!/usr/bin/env python
-
 __author__ = 'Matiss Ozols'
-__date__ = '2021-08-11'
+__date__ = '2022-12-05'
 __version__ = '0.0.1'
 
 ''''This file takes the pathway analysis and generates a chorrds graphs for the set of genes'''
 import pandas as pd
 import os
-outfolder='/Users/mo11/work/Bennet_project/test/'
-w1='22'
-w2='72'
-outname = f'{outfolder}Pathways_Chord_{w1}_{w2}.csv'
-outname2 = f'{outfolder}Pathways_Chord_{w1}_{w2}.svg'
+import argparse
+pyd_loc = os.path.dirname(__file__)
+def main():
+    """Run CLI."""
+    parser = argparse.ArgumentParser(
+        description="""
+                This code mengles the data in the right format to produce the chord graphs, and calls the cord graph generation
+            """
+    )
+    parser.add_argument(
+        '-o', '--out_file',
+        dest='out_file',
+        required=True,
+        help='outfile name and path'
+    )
 
-# Data_Genes = pd.read_excel(f'/Users/mo11/Library/CloudStorage/GoogleDrive-mo11@sanger.ac.uk/My Drive/Cambridge_Proteomics/work/Matiss Pathway Analysis - all GN with Interactions/Reactome Analysis all GN Interactions.xlsx',sheet_name=f'{w1}_v_{w2}_fold_changes')
-# Data_Genes = Data_Genes[Data_Genes['P.Value'].astype(float)<=0.05]
-# Data_Genes['GN']=Data_Genes['Identifier']
-# DF1 = Data_Genes[['Identifier','logFC']].head(50)
-Data_Genes = pd.read_csv('/Users/mo11/work/Chord_Plots/sample_data/sample_data_1.tsv',sep='\t')
-# DF1.to_csv('/Users/mo11/work/Chord_Plots/sample_data/sample_data_1.tsv',sep='\t')
-Data_Pathways=pd.read_excel('/Users/mo11/Library/CloudStorage/GoogleDrive-mo11@sanger.ac.uk/My Drive/Cambridge_Proteomics/work/Matiss Pathway Analysis - all GN with Interactions/Reactome Analysis all GN Interactions.xlsx',sheet_name='Pathways')
-Data_Pathways=pd.read_csv('/Users/mo11/work/Chord_Plots/sample_data/sample_data_2_bellongings.tsv')
-Data_Pathways = Data_Pathways[Data_Pathways[f'FDR.{w1} v {w2}']<=0.05]
-DF2 = Data_Pathways[['Name','Genes']]
-DF2.to_csv('/Users/mo11/work/Chord_Plots/sample_data/sample_data_2_bellongings.tsv',sep='\t')
-Data_Pathways = pd.read_csv('/Users/mo11/work/Chord_Plots/sample_data/sample_data_2_belongings.tsv')
-Data_Pathways['Genes']=Data_Pathways['Genes'].str.upper()
-Data_Pathways = Data_Pathways.dropna(subset=['Genes'])
-Data_Pathways['Genes'] = ';'+Data_Pathways['Genes']+';'
-colnames_all = list(Data_Pathways.Name)
-colnames_all.append('logFC')
-Data = pd.DataFrame(columns=colnames_all)
+    parser.add_argument(
+        '-f1', '--file1',
+        default='',
+        dest='file1',
+        required=False,
+        help='file1.'
+    )
 
-for i, row in Data_Genes.iterrows():
-    logFC = row['logFC']
-    GN = row['GN'].upper()
-    Pathways = Data_Pathways[Data_Pathways['Genes'].str.contains(f';{GN};')]
-    if len(Pathways)>0:
-        paths = list(Pathways.Name)
-        paths=list(set(paths).intersection(colnames_all))
-        
-        if(len(paths)>0):
-            Data.loc[GN]=0
-            Data.loc[GN,paths]=1
-            Data.loc[GN,'logFC']= logFC
+    parser.add_argument(
+        '-f2', '--file2',
+        default='',
+        dest='file2',
+        required=False,
+        help='file2.'
+    )
+    options = parser.parse_args()
+    outfolder=options.out_file
+    outfolder = "/".join(outfolder.split('.')[:-1])
+    outname = f'{outfolder}.csv'
+    outname2 = f'{outfolder}.svg'
+    
+    Data_Genes = pd.read_csv(options.file1,sep='\t')
+    Data_Pathways = pd.read_csv(options.file2,sep='\t')
 
-Data = Data.loc[:,Data.sum(axis=0) !=0]
-Data.to_csv(outname)
-# then feed this in the R module to generate the chord graph
-os.system(f'Rscript Go_module.R {outname} {outname2}')
-print('Finished generating chord graph')
+    Colname = Data_Pathways.iloc[:,1].name
+    Colname2 = Data_Genes.iloc[:,1].name
+    Data_Pathways.iloc[:,1]=Data_Pathways.iloc[:,1].str.upper()
+    Data_Pathways = Data_Pathways.dropna(subset=[Colname])
+    Data_Pathways[Colname] = ';'+Data_Pathways[Colname]+';'
+    colnames_all = list(Data_Pathways['Identifier'])
+    colnames_all.append(Colname2)
+    Data = pd.DataFrame(columns=colnames_all)
+
+    for i, row in Data_Genes.iterrows():
+        logFC = row[Colname2]
+        GN = row['Identifier'].upper()
+        Pathways = Data_Pathways[Data_Pathways[Colname].str.contains(f';{GN};')]
+        if len(Pathways)>0:
+            paths = list(Pathways['Identifier'])
+            paths=list(set(paths).intersection(colnames_all))
+            if(len(paths)>0):
+                Data.loc[GN]=0
+                Data.loc[GN,paths]=1
+                Data.loc[GN,Colname2]= logFC
+    Data = Data.loc[:,Data.sum(axis=0) !=0]
+    Data.to_csv(outname)
+    os.system(f'Rscript {pyd_loc}/Go_module.R {outname} {outname2}')
+    os.remove(outname)
+
+if __name__ == '__main__':
+    main()
+    print('Finished generating chord graph')
+    
+
