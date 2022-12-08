@@ -36,7 +36,7 @@ unique_vals<-unique_vals[!is.na(unique_vals)]
 link_colors =hash()
 for(val1 in unique_vals){
     print(val1)
-    link_colors[val1]=rand_color(1,luminosity="light")
+    link_colors[val1]=rand_color(1,luminosity="light", transparency = 0.4)
 }
 
 for (val in colnames(df2))
