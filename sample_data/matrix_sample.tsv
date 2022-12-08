@@ -1,0 +1,11 @@
+Identifier	color	Treatment1	Treatment2	Treatment3
+color		2	3	4
+Metabolism of lipids	1	1	1	1
+Metabolism of fat-soluble vitamins	1	1	1	-1
+Activation of gene expression by SREBF (SREBP)	1	1	1	0
+FGFR1 ligand binding and activation	1	1	1	0
+FGFR4 ligand binding and activation2	1		1	0
+FGFR4 ligand binding and activation3	1	1	1	0
+FGFR4 ligand binding and activation4	1	1	1	0
+FGFR4 ligand binding and activation5	1	1	1	
+FGFR4 ligand binding and activation6	1	1		0
