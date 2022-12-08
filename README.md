@@ -13,7 +13,7 @@ install.packages('GOplot')
 After instalation:
 
 # For the expression type of plots as in - 
-
+![Sample Expression Plot](https://github.com/maxozo/Chord_Graphs/blob/main/test_output/Pathways_Chord_22_72.svg)
 prepeare 2 files - 
 1) Quantifiable file (like in example file ./sample_data/sample_data1.tsv)  - first col must be Identifier, second column can be any quantifiable value of your interest, does not have to be labeled logFC: 
 Identifier	logFC
@@ -33,7 +33,7 @@ python /path/to/your/colned/folder/Produce_Chrod.py -o test_output_Nath.svg -f1 
 
 
 # For matrix pathway plots type of plots as in - 
-![alt text](https://github.com/maxozo/Chord_Graphs/blob/main/test_output/matrix_test_out.pdf )
+![Sample Matrix Plot](https://github.com/maxozo/Chord_Graphs/blob/main/test_output/matrix_test_out.pdf )
 Produce a pathway matrix file where first column is first identifiers and firt row is second identifiers that you want to link.
 The second column has to be color - this is a bolean number that will make coresponding rows/columns in a different color ion a circle plot(currently arbitary).
 The second row has to be color again for the same reason.
