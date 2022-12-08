@@ -3,3 +3,5 @@ os
 r-dplyr
 r-tidyverse
 r-svglite
+r-circlize
+r-hash
