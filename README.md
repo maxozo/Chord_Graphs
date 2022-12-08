@@ -29,7 +29,7 @@ Platelet degranulation	CAVIN2;RMDN3;LRPPRC;SPTB;CD36;CLIP1;ACTN3;ACTG1;COL1A1;MB
 G2 Phase	PAWR;IKBKG;GSN;APP;STAT1
 
 Once you have both of these files you can run:
-python /path/to/your/colned/folder/Produce_Chrod.py -o test_output_Nath.svg -f1 /path/to/your/sample_data_1.tsv -f2 /path/to/your/sample_data_2_belongings.tsv
+`python /path/to/your/colned/folder/Produce_Chrod.py -o test_output_Nath.svg -f1 /path/to/your/sample_data_1.tsv -f2 /path/to/your/sample_data_2_belongings.tsv`
 
 
 # For matrix pathway plots type of plots as in - 
