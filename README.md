@@ -33,7 +33,7 @@ python /path/to/your/colned/folder/Produce_Chrod.py -o test_output_Nath.svg -f1 
 
 
 # For matrix pathway plots type of plots as in - 
-
+![alt text](https://github.com/maxozo/Chord_Graphs/blob/main/test_output/matrix_test_out.pdf )
 Produce a pathway matrix file where first column is first identifiers and firt row is second identifiers that you want to link.
 The second column has to be color - this is a bolean number that will make coresponding rows/columns in a different color ion a circle plot(currently arbitary).
 The second row has to be color again for the same reason.
