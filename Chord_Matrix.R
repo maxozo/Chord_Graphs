@@ -115,7 +115,7 @@ res <- 144
 
 pdf(arg2,width = 1080/res, height = 820/res)
 layout(matrix(1:1, 1, 1),respect = TRUE)
-par(mar = c(1), bg=rgb(1,1,1,1) )
+# par(mar = c(1), bg=rgb(1,1,1,1) )
 circos.par(cell.padding = c(0, 0, 0, 0),circle.margin=c(0.9,0.9,0.9,0.9)) 
 circos.initialize(factors, xlim = c(0, .5)) 
 count=0
